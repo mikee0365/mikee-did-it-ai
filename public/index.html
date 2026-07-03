@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mikee Did It | AI Humanizer, Rephraser & Checker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <p class="eyebrow">AI writing assistant</p>
+      <h1>Mikee Did It</h1>
+      <p class="subtitle">Humanize text, rephrase paragraphs, and estimate how AI-like your writing sounds.</p>
+    </section>
+
+    <section class="tool-card">
+      <div class="mode-tabs" aria-label="Tool modes">
+        <button class="tab active" data-mode="humanize">Humanizer</button>
+        <button class="tab" data-mode="rephrase">Rephraser</button>
+        <button class="tab" data-mode="check-ai">AI Checker</button>
+      </div>
+
+      <label for="inputText">Paste your text below</label>
+      <textarea id="inputText" placeholder="Paste text here..."></textarea>
+
+      <div class="controls">
+        <div>
+          <label for="toneSelect" id="selectLabel">Tone</label>
+          <select id="toneSelect">
+            <option value="simple and natural">Simple & Natural</option>
+            <option value="college freshman">College Freshman</option>
+            <option value="professional">Professional</option>
+            <option value="friendly">Friendly</option>
+            <option value="clear and concise">Clear & Concise</option>
+          </select>
+        </div>
+
+        <button id="runBtn">Humanize Text</button>
+      </div>
+
+      <p id="status" class="status"></p>
+
+      <section id="checkerResult" class="checker-result hidden">
+        <div class="score-row">
+          <div>
+            <p class="score-label">Estimated AI-likeness</p>
+            <p id="aiScore" class="score">--%</p>
+          </div>
+          <div>
+            <p class="score-label">Estimated human-likeness</p>
+            <p id="humanScore" class="score">--%</p>
+          </div>
+        </div>
+        <p id="verdict" class="verdict"></p>
+        <ul id="signals"></ul>
+        <p id="warning" class="warning"></p>
+      </section>
+
+      <section id="outputWrap" class="output-wrap">
+        <div class="output-header">
+          <label for="outputText">Output</label>
+          <button id="copyBtn" class="secondary">Copy Output</button>
+        </div>
+        <textarea id="outputText" placeholder="Your result will appear here..." readonly></textarea>
+      </section>
+    </section>
+
+    <p class="small-note">AI checker scores are estimates only. They are not proof that text was or was not written by AI.</p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
