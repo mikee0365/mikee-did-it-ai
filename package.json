@@ -1,7 +1,7 @@
 {
   "name": "mikee-did-it-ai",
-  "version": "1.0.0",
-  "description": "Mikee Did It - AI humanizer, rephraser, and AI-likeness checker using an OpenAI API backend.",
+  "version": "1.1.0",
+  "description": "Mikee Did It - AI humanizer, rephraser, AI-likeness checker, and instructor grade estimate using an OpenAI API backend.",
   "type": "module",
   "main": "server.js",
   "scripts": {

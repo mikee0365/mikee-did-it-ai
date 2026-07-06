@@ -1,47 +1,42 @@
-# Mikee Did It AI
+# Mikee Did It AI — Instructor Check Upgrade
 
-This is a simple AI writing web app with:
+This version adds an **Instructor Check** block to the existing Mikee Did It app.
 
-- AI Humanizer
-- Rephraser
-- AI-likeness checker
-- OpenAI API backend using Node.js and Express
+## What it does
 
-## Important AI Checker Note
+1. Humanize or rephrase text.
+2. Keep the chosen result in the output box.
+3. Select assignment type and course level.
+4. Optionally paste the instructor's directions or grading rubric.
+5. Click **Check This Result**.
 
-The AI checker gives an estimate only. It is not proof that text was written by AI. AI detectors can be wrong and should not be used to accuse students, employees, or writers.
+The app returns:
 
-## Setup
+- Estimated percentage grade
+- Estimated letter grade
+- Confidence level
+- Overall instructor-style feedback
+- Five-part rubric breakdown
+- Three strengths
+- Three top improvements
 
-1. Install Node.js from https://nodejs.org
-2. Open this folder in VS Code or your terminal.
-3. Install dependencies:
+## Important
 
-```bash
-npm install
-```
+The estimated grade is AI-generated feedback only. It is not an official grade and may differ from the actual instructor's evaluation.
 
-4. Rename `.env.example` to `.env`.
-5. Add your OpenAI API key inside `.env`:
+## Environment variables
 
-```bash
-OPENAI_API_KEY=sk-your-api-key-here
-OPENAI_MODEL=gpt-5.5
+Set these on Railway:
+
+```text
+OPENAI_API_KEY=your_secret_key
+OPENAI_MODEL=your_supported_model_name
 PORT=3000
 ```
 
-6. Start the app:
+## Start locally
 
 ```bash
+npm install
 npm start
 ```
-
-7. Open this in your browser:
-
-```text
-http://localhost:3000
-```
-
-## Deploying Online
-
-Do not host this as only static HTML because your API key must stay secret. Use a backend host such as Render, Railway, Fly.io, or another Node.js server host. Add your `OPENAI_API_KEY` as an environment variable in the host dashboard.
