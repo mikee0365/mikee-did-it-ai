@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mikee Did It | AI Humanizer, Rephraser & Checker</title>
+  <title>Mikee Did It | Rewrite Until It Sounds Like You</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -11,7 +11,8 @@
     <section class="hero">
       <p class="eyebrow">AI writing assistant</p>
       <h1>Mikee Did It</h1>
-      <p class="subtitle">Humanize text, rephrase paragraphs, and estimate how AI-like your writing sounds.</p>
+      <p class="tagline">Don’t make it sound human. Make it sound like you.</p>
+      <p class="subtitle">Rewrite your draft, choose the version you like, then see how an instructor might evaluate it.</p>
     </section>
 
     <section class="tool-card">
@@ -35,11 +36,10 @@
             <option value="clear and concise">Clear & Concise</option>
           </select>
         </div>
-
         <button id="runBtn">Humanize Text</button>
       </div>
 
-      <p id="status" class="status"></p>
+      <p id="status" class="status" aria-live="polite"></p>
 
       <section id="checkerResult" class="checker-result hidden">
         <div class="score-row">
@@ -59,14 +59,90 @@
 
       <section id="outputWrap" class="output-wrap">
         <div class="output-header">
-          <label for="outputText">Output</label>
-          <button id="copyBtn" class="secondary">Copy Output</button>
+          <label for="outputText">Chosen result</label>
+          <button id="copyBtn" class="secondary">Copy Result</button>
         </div>
         <textarea id="outputText" placeholder="Your result will appear here..." readonly></textarea>
       </section>
+
+      <section id="instructorPanel" class="instructor-panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow instructor-eyebrow">Instructor Check</p>
+            <h2>How might this result be graded?</h2>
+            <p>Mikee reviews the chosen result like an instructor and gives an estimated grade, rubric breakdown, and specific improvements.</p>
+          </div>
+          <span class="beta-badge">BETA</span>
+        </div>
+
+        <div class="instructor-controls">
+          <div>
+            <label for="assignmentType">Assignment type</label>
+            <select id="assignmentType">
+              <option value="discussion post">Discussion Post</option>
+              <option value="essay">Essay</option>
+              <option value="research paper">Research Paper</option>
+              <option value="reflection paper">Reflection Paper</option>
+              <option value="short answer response">Short Answer</option>
+            </select>
+          </div>
+          <div>
+            <label for="courseLevel">Course level</label>
+            <select id="courseLevel">
+              <option value="college freshman">College Freshman</option>
+              <option value="undergraduate">Undergraduate</option>
+              <option value="graduate">Graduate</option>
+              <option value="high school">High School</option>
+            </select>
+          </div>
+        </div>
+
+        <details class="directions-box">
+          <summary>Add assignment directions or rubric for a better estimate</summary>
+          <label for="assignmentDirections">Assignment directions or rubric</label>
+          <textarea id="assignmentDirections" placeholder="Paste the professor's instructions, grading rubric, word count, citation requirements, or other expectations..."></textarea>
+        </details>
+
+        <button id="instructorBtn" class="instructor-button">Check This Result</button>
+        <p id="instructorStatus" class="status" aria-live="polite"></p>
+
+        <section id="gradeResult" class="grade-result hidden">
+          <div class="grade-hero">
+            <div>
+              <p class="score-label">Estimated grade</p>
+              <div class="grade-line">
+                <span id="letterGrade" class="letter-grade">--</span>
+                <span id="percentGrade" class="percent-grade">--%</span>
+              </div>
+            </div>
+            <div class="confidence-box">
+              <p class="score-label">Confidence</p>
+              <p id="gradeConfidence" class="confidence-value">--</p>
+            </div>
+          </div>
+
+          <p id="overallFeedback" class="overall-feedback"></p>
+
+          <h3>Rubric breakdown</h3>
+          <div id="rubricBreakdown" class="rubric-grid"></div>
+
+          <div class="feedback-columns">
+            <div>
+              <h3>What is working</h3>
+              <ul id="gradeStrengths"></ul>
+            </div>
+            <div>
+              <h3>Top improvements</h3>
+              <ul id="gradeImprovements"></ul>
+            </div>
+          </div>
+
+          <p id="gradeWarning" class="warning"></p>
+        </section>
+      </section>
     </section>
 
-    <p class="small-note">AI checker scores are estimates only. They are not proof that text was or was not written by AI.</p>
+    <p class="small-note">AI and grade scores are estimates only. They are not proof of authorship and are not official instructor grades.</p>
   </main>
 
   <script src="script.js"></script>

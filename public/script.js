@@ -14,6 +14,21 @@ const verdict = document.getElementById('verdict');
 const signals = document.getElementById('signals');
 const warning = document.getElementById('warning');
 
+const instructorBtn = document.getElementById('instructorBtn');
+const instructorStatus = document.getElementById('instructorStatus');
+const assignmentType = document.getElementById('assignmentType');
+const courseLevel = document.getElementById('courseLevel');
+const assignmentDirections = document.getElementById('assignmentDirections');
+const gradeResult = document.getElementById('gradeResult');
+const letterGrade = document.getElementById('letterGrade');
+const percentGrade = document.getElementById('percentGrade');
+const gradeConfidence = document.getElementById('gradeConfidence');
+const overallFeedback = document.getElementById('overallFeedback');
+const rubricBreakdown = document.getElementById('rubricBreakdown');
+const gradeStrengths = document.getElementById('gradeStrengths');
+const gradeImprovements = document.getElementById('gradeImprovements');
+const gradeWarning = document.getElementById('gradeWarning');
+
 let currentMode = 'humanize';
 
 const modeSettings = {
@@ -55,11 +70,11 @@ function setMode(mode) {
   currentMode = mode;
   const settings = modeSettings[mode];
 
-  tabs.forEach(tab => tab.classList.toggle('active', tab.dataset.mode === mode));
+  tabs.forEach((tab) => tab.classList.toggle('active', tab.dataset.mode === mode));
   runBtn.textContent = settings.button;
   selectLabel.textContent = settings.label;
-
   toneSelect.innerHTML = '';
+
   settings.options.forEach(([value, label]) => {
     const option = document.createElement('option');
     option.value = value;
@@ -109,18 +124,12 @@ async function runTool() {
       humanScore.textContent = data.human_percentage !== null && data.human_percentage !== undefined ? `${data.human_percentage}%` : '--%';
       verdict.textContent = data.verdict || 'No verdict returned.';
       warning.textContent = data.warning || 'This result is only an estimate.';
-      signals.innerHTML = '';
-
-      const signalList = Array.isArray(data.signals) ? data.signals : [];
-      signalList.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = item;
-        signals.appendChild(li);
-      });
-
+      renderSimpleList(signals, data.signals);
       checkerResult.classList.remove('hidden');
     } else {
       outputText.value = data.output || '';
+      gradeResult.classList.add('hidden');
+      instructorStatus.textContent = '';
     }
 
     statusText.textContent = 'Done.';
@@ -133,7 +142,7 @@ async function runTool() {
 
 async function copyOutput() {
   if (!outputText.value.trim()) {
-    statusText.textContent = 'There is no output to copy yet.';
+    statusText.textContent = 'There is no result to copy yet.';
     return;
   }
 
@@ -141,8 +150,99 @@ async function copyOutput() {
   statusText.textContent = 'Copied.';
 }
 
-tabs.forEach(tab => tab.addEventListener('click', () => setMode(tab.dataset.mode)));
+function renderSimpleList(element, items) {
+  element.innerHTML = '';
+  const list = Array.isArray(items) ? items : [];
+
+  list.forEach((item) => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    element.appendChild(li);
+  });
+}
+
+function renderRubric(items) {
+  rubricBreakdown.innerHTML = '';
+  const list = Array.isArray(items) ? items : [];
+
+  list.forEach((item) => {
+    const card = document.createElement('article');
+    card.className = 'rubric-card';
+
+    const header = document.createElement('div');
+    header.className = 'rubric-card-header';
+
+    const category = document.createElement('strong');
+    category.textContent = item.category || 'Category';
+
+    const score = document.createElement('span');
+    score.textContent = `${item.score ?? '--'} / ${item.max_score ?? '--'}`;
+
+    const feedback = document.createElement('p');
+    feedback.textContent = item.feedback || '';
+
+    header.append(category, score);
+    card.append(header, feedback);
+    rubricBreakdown.appendChild(card);
+  });
+}
+
+async function runInstructorCheck() {
+  const selectedText = outputText.value.trim() || inputText.value.trim();
+
+  if (!selectedText) {
+    instructorStatus.textContent = 'Create or paste a result first.';
+    return;
+  }
+
+  instructorBtn.disabled = true;
+  instructorStatus.textContent = outputText.value.trim()
+    ? 'Reviewing your chosen result like an instructor...'
+    : 'Reviewing your pasted text like an instructor...';
+  gradeResult.classList.add('hidden');
+
+  try {
+    const response = await fetch('/api/instructor-check', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: selectedText,
+        assignmentType: assignmentType.value,
+        courseLevel: courseLevel.value,
+        assignmentDirections: assignmentDirections.value.trim()
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'The instructor check failed.');
+    }
+
+    letterGrade.textContent = data.estimated_letter_grade || '--';
+    percentGrade.textContent = data.estimated_percentage !== null && data.estimated_percentage !== undefined
+      ? `${data.estimated_percentage}%`
+      : '--%';
+    gradeConfidence.textContent = data.confidence || '--';
+    overallFeedback.textContent = data.overall_feedback || 'No overall feedback returned.';
+    gradeWarning.textContent = data.warning || 'This is an AI estimate only. Your actual instructor grade may differ.';
+
+    renderRubric(data.rubric_breakdown);
+    renderSimpleList(gradeStrengths, data.strengths);
+    renderSimpleList(gradeImprovements, data.top_improvements);
+
+    gradeResult.classList.remove('hidden');
+    instructorStatus.textContent = 'Instructor check complete.';
+  } catch (error) {
+    instructorStatus.textContent = error.message;
+  } finally {
+    instructorBtn.disabled = false;
+  }
+}
+
+tabs.forEach((tab) => tab.addEventListener('click', () => setMode(tab.dataset.mode)));
 runBtn.addEventListener('click', runTool);
 copyBtn.addEventListener('click', copyOutput);
+instructorBtn.addEventListener('click', runInstructorCheck);
 
 setMode('humanize');

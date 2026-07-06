@@ -11,7 +11,7 @@ body {
 }
 
 .app-shell {
-  width: min(980px, 94%);
+  width: min(1040px, 94%);
   margin: 0 auto;
   padding: 48px 0;
 }
@@ -34,9 +34,24 @@ h1 {
   font-size: clamp(2.5rem, 6vw, 5rem);
 }
 
+h2 {
+  margin: 4px 0 8px;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+h3 {
+  margin: 18px 0 10px;
+}
+
+.tagline {
+  margin: 0 0 8px;
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-weight: 700;
+}
+
 .subtitle {
   margin: 0 auto;
-  max-width: 650px;
+  max-width: 720px;
   color: #d1d5db;
   line-height: 1.6;
 }
@@ -102,16 +117,17 @@ select:focus {
   border-color: #60a5fa;
 }
 
-.controls {
-  display: flex;
-  justify-content: space-between;
+.controls,
+.instructor-controls {
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: end;
   gap: 16px;
   margin: 18px 0;
 }
 
-.controls > div {
-  flex: 1;
+.instructor-controls {
+  grid-template-columns: repeat(2, 1fr);
 }
 
 select {
@@ -168,7 +184,8 @@ button:disabled {
   margin-top: 8px;
 }
 
-.checker-result {
+.checker-result,
+.grade-result {
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 18px;
   padding: 18px;
@@ -199,6 +216,165 @@ button:disabled {
   margin-top: 16px;
 }
 
+.instructor-panel {
+  margin-top: 28px;
+  padding: 24px;
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(37, 99, 235, 0.14), rgba(17, 24, 39, 0.74));
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.section-heading p {
+  color: #d1d5db;
+  line-height: 1.55;
+}
+
+.instructor-eyebrow {
+  margin-top: 0;
+}
+
+.beta-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(96, 165, 250, 0.18);
+  border: 1px solid rgba(147, 197, 253, 0.45);
+  color: #dbeafe;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.directions-box {
+  margin: 8px 0 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(17, 24, 39, 0.45);
+}
+
+.directions-box summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.directions-box label {
+  margin-top: 16px;
+}
+
+.directions-box textarea {
+  min-height: 130px;
+}
+
+.instructor-button {
+  width: 100%;
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  font-size: 1.02rem;
+}
+
+.grade-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 22px;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.grade-line {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.letter-grade {
+  font-size: clamp(3rem, 8vw, 5.2rem);
+  line-height: 1;
+  font-weight: 900;
+}
+
+.percent-grade {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #bfdbfe;
+}
+
+.confidence-box {
+  min-width: 150px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.confidence-value {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.overall-feedback {
+  color: #e5e7eb;
+  line-height: 1.65;
+  font-size: 1.02rem;
+}
+
+.rubric-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.rubric-card {
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(17, 24, 39, 0.48);
+}
+
+.rubric-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.rubric-card-header span {
+  white-space: nowrap;
+  color: #bfdbfe;
+  font-weight: 800;
+}
+
+.rubric-card p {
+  margin: 8px 0 0;
+  color: #d1d5db;
+  line-height: 1.5;
+}
+
+.feedback-columns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.feedback-columns > div {
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.feedback-columns ul,
+.checker-result ul {
+  padding-left: 20px;
+  line-height: 1.6;
+}
+
 .warning,
 .small-note {
   color: #fbbf24;
@@ -216,12 +392,27 @@ button:disabled {
 
 @media (max-width: 720px) {
   .mode-tabs,
-  .score-row {
+  .score-row,
+  .instructor-controls,
+  .feedback-columns {
     grid-template-columns: 1fr;
   }
 
   .controls {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading,
+  .grade-hero {
     flex-direction: column;
-    align-items: stretch;
+  }
+
+  .confidence-box {
+    width: 100%;
+  }
+
+  .output-header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
